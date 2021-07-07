@@ -12,7 +12,7 @@ message Request {
 message ReplyID {
   int64 ID = 1;
 }
-service Greeter {
+service StudentID {
   // Sends a name to ask for ID
   rpc StudentID (Request) returns (ReplyID) {}
 
