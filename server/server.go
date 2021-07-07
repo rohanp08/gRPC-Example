@@ -13,17 +13,17 @@ const (
 	port = ":50051"
 )
 
-// server is used to implement helloworld.GreeterServer.
+// server is used to implement student.StudentID
 type server struct {
 	pb.UnimplementedGreeterServer
 }
 
-// SayHello implements helloworld.GreeterServer
+// StudentID implements student.StudentID
 func (s *server) StudentID(ctx context.Context, in *pb.Request) (*pb.ReplyID, error) {
 	log.Printf("Received: %v", in)
-	id := rand.Int63()
+	id := rand.Int63() //generate random ID
 	reply := &pb.ReplyID{ID: id}
-	return reply, nil
+	return reply, nil //return reply which contains ID
 }
 
 func main() {
