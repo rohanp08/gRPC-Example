@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "/";
+package student;
+
+// The request message containing the user's name.
+message Request {
+  string name = 1;
+}
+
+// The response message containing the ID
+message ReplyID {
+  int64 ID = 1;
+}
+service Greeter {
+  // Sends a name to ask for ID
+  rpc StudentID (Request) returns (ReplyID) {}
+
+}
+
+//protoc --go_out=plugins=grpc:student student/student.proto
