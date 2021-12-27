@@ -2,11 +2,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 	pb "gRPC/student"
-	"google.golang.org/grpc"
 	"log"
 	"os"
 	"time"
+
+	"google.golang.org/grpc"
 )
 
 const (
@@ -24,18 +26,27 @@ func main() {
 	c := pb.NewGreeterClient(conn)
 
 	// Contact the server and print out its response.
-	name := defaultName
-	if len(os.Args) > 1 {
-		name = os.Args[1]
+	var name string
+
+	for {
+		name = ""
+		fmt.Print("Enter Student Name: ")
+		fmt.Scanln(&name)
+
+		if name == "" || name == "q" {
+			fmt.Println("Exiting!")
+			break
+		}
+		if len(os.Args) > 1 {
+			name = os.Args[1]
+		}
+		ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+		defer cancel()
+		//request ID
+		r, err := c.StudentID(ctx, &pb.Request{Name: name})
+		if err != nil {
+			log.Fatalf("could not get ID: %v", err)
+		}
+		log.Printf("Student: %v, ID: %v", name, r.ID)
 	}
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	//request ID
-	r, err := c.StudentID(ctx, &pb.Request{Name: name})
-	if err != nil {
-		log.Fatalf("could not get ID: %v", err)
-	}
-	log.Printf("Student: %v, ID: %v",name, r.ID)
 }
-
-
